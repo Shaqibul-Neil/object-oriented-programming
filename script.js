@@ -245,3 +245,5 @@ console.log(neil);
 console.log(neil.species);
 console.log(neil.hasOwnProperty('firstName'));
 console.log(neil.hasOwnProperty('species')); //false bcz its not really a property of neil. it simply has access to it bcz of prototype property of person
+
+//Prototypal Inheritance and The Prototype Chain
