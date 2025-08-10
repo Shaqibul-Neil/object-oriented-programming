@@ -564,3 +564,82 @@ Instruction:
 balance নামে getter দাও যা #balance রিটার্ন করবে।
 deposit(amount) মেথড তৈরি করো যা #balance বাড়াবে (শুধুমাত্র পজিটিভ মান)।
 withdraw(amount) মেথড তৈরি করো যা #balance কমাবে যদি যথেষ্ট ব্যালেন্স থাকে।*/
+
+/****************Practice 3****************/
+/*৩. Rectangle Class
+Instruction:
+একটা Rectangle ক্লাস বানাও।
+প্রোপার্টি: width, height।
+area নামে getter দাও যা আয়তক্ষেত্রের এলাকা রিটার্ন করবে।
+perimeter নামে getter দাও যা পেরিমিটার রিটার্ন করবে।
+width এবং height এর জন্য setter দাও যাতে নেগেটিভ ভ্যালু সেট করলে alert দেখায়।*/
+
+/****************Practice 4****************/
+/*৪. Temperature Class
+Instruction:
+একটা Temperature ক্লাস বানাও।
+প্রোপার্টি: celsius (প্রাইভেট)।
+fahrenheit নামে getter/setter দাও।
+fahrenheit getter হবে celsius থেকে ফারেনহাইট কনভার্সন।
+fahrenheit setter হবে ফারেনহাইট থেকে celsius সেট করবে।*/
+/*
+class Temperature {
+  #celsius;
+  constructor(celcius) {
+    this.#celsius = celcius;
+  }
+  // Getter: Celsius → Fahrenheit
+  get fahrenheit() {
+    return this.#celsius * (9 / 5) + 32;
+  }
+  // Setter: Fahrenheit → Celsius
+  set fahrenheit(f) {
+    this.#celsius = (f - 32) * (5 / 9);
+  }
+}
+const dhaka = new Temperature(50);
+console.log(dhaka);
+console.log(dhaka.fahrenheit);
+dhaka.fahrenheit = 100;
+console.log(dhaka.fahrenheit);
+console.log(dhaka);
+*/
+
+/****************Practice 5****************/
+/*৫. User Class
+Instruction:
+একটা User ক্লাস বানাও।
+প্রোপার্টি: _password (প্রাইভেট)।
+password নামে setter দাও যা ৮ অক্ষরের কম হলে alert দিবে।
+password নামে getter দাও যা শুধু ****** রিটার্ন করবে (হ্যাকিং থেকে রক্ষা করতে)।*/
+
+/*
+class User {
+  #password; //private property
+  constructor(password) {
+    if (String(password).length >= 8) this.#password = String(password);
+    else {
+      alert('Please enter atleast 8 character');
+      this.#password = ''; //default empty if invalid
+    }
+  }
+  set password(newPassword) {
+    if (String(newPassword).length >= 8) this.#password = String(newPassword);
+    else {
+      alert('Please enter atleast 8 character');
+    }
+  }
+  get password() {
+    //return masked password
+
+    return '*'.repeat(this.#password.length);
+  }
+}
+const shakib = new User(123456789);
+console.log(shakib.password);
+shakib.password = 'stringfdg';
+console.log(shakib.password);
+shakib.password = 5555124454;
+console.log(shakib.password);
+console.log(shakib);
+*/
