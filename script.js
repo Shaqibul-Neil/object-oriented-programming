@@ -1,7 +1,7 @@
 'use strict';
-
-//Constructor Functions and the new Operator
-/**********************************************/
+/**********************************************************/
+/****** Constructor Functions and the new Operator *******/
+/********************************************************/
 
 //person hsse constructor function
 // const Person = function (firstName, birthYear) {
@@ -213,7 +213,10 @@
 // console.log(Object.getPrototypeOf(p1));
 // console.log(Object.getPrototypeOf(p1) === Person.prototype);
 
-//Prototypes
+/**********************************************/
+/**************** Prototypes *****************/
+/********************************************/
+/*
 const Person = function (firstName, birthYear) {
   console.log(this);
   this.birthYear = birthYear;
@@ -245,5 +248,319 @@ console.log(neil);
 console.log(neil.species);
 console.log(neil.hasOwnProperty('firstName'));
 console.log(neil.hasOwnProperty('species')); //false bcz its not really a property of neil. it simply has access to it bcz of prototype property of person
+*/
 
-//Prototypal Inheritance and The Prototype Chain
+/***********************************************************/
+/***** Prototypal Inheritance and The Prototype Chain *****/
+/*********************************************************/
+/*
+console.log(Object);
+console.log(Object.prototype);
+console.log(Function.prototype);
+console.log(Object.prototype.isPrototypeOf(Person.prototype)); //true
+console.log(Person.__proto__ === Function.prototype); //true
+console.log(Function.prototype.__proto__ === Object.prototype); //true
+console.log(Object.prototype.__proto__ === null); //true
+console.log(Person.prototype.__proto__ === Object.prototype); //true
+console.log(neil.__proto__ === Person.prototype); //true
+console.log(neil.__proto__ === Person); //false
+console.log(neil.__proto__.constructor === Person); //true
+console.log(neil);
+console.log(neil.__proto__); //=Person.prototype
+console.log(neil.__proto__.__proto__); //Object.prototype
+console.log(neil.__proto__.__proto__.__proto__); //null
+console.log(neil.__proto__.constructor);
+console.dir(neil.__proto__.constructor);
+
+const arr = [3, 4, 4, 5, 3, 6, 6, 7, 1]; //[] eta ar new Array 2ta e same. ai jnne new operator er kaj ta [] eta kre
+console.log(arr.__proto__);
+console.log(arr.__proto__ === Array.prototype); //true
+console.log(Array.prototype.__proto__ === Object.prototype); //true: Array is a special type of object
+console.log(arr.__proto__.__proto__); //Object.prototype
+console.log(arr.__proto__.__proto__.__proto__); //null
+
+//creating new  array method (not a good idea)
+Array.prototype.unique = function () {
+  return [...new Set(this)];
+};
+console.log(arr.unique());
+
+const h1 = document.querySelector('h1');
+console.dir(x => x + 1);
+*/
+
+/**********************************************/
+/**************** CHALLENGE #1 ****************/
+/**********************************************/
+/*
+const Car = function (make, speed) {
+  this.make = make;
+  this.speed = speed;
+};
+Car.prototype.accelerate = function () {
+  this.speed += 10;
+  console.log(`${this.make} going at ${this.speed} km/h`);
+};
+Car.prototype.brake = function () {
+  this.speed -= 5;
+  console.log(`${this.make} going at ${this.speed} km/h`);
+};
+const car1 = new Car('BMW', 120);
+console.log(car1);
+const car2 = new Car('Mercedes', 95);
+console.log(car2);
+
+car1.accelerate();
+car1.accelerate();
+car1.accelerate();
+car1.brake();
+car1.brake();
+car1.brake();
+car2.brake();
+car2.brake();
+car2.accelerate();
+car2.accelerate();
+*/
+/*১. accelerate এবং brake methods কি করে?
+accelerate method গাড়ির speed বাড়ায় (speed += 10)
+brake method গাড়ির speed কমায় (speed -= 5)
+অর্থাৎ, এই দুইটা method speed কে manipulate (পরিবর্তন) করতে পারে।
+২. এই method গুলো কী?
+এগুলো হলো গাড়ি object এর public interface।
+মানে, বাইরের অন্য কোড শুধু এই method গুলোর মাধ্যমে গাড়ির speed নিয়ন্ত্রণ করতে পারবে।
+৩. public interface মানে?
+একদম বাইরের কোড গাড়ির speed প্রোপার্টিকে সরাসরি না ছুঁয়ে
+শুধুমাত্র accelerate() বা brake() method ডেকে গাড়ির speed নিয়ন্ত্রণ করে।
+এতে data encapsulation হয় — ডেটা সুরক্ষিত থাকে, শুধু নির্দিষ্ট ফাংশন দিয়েই পরিবর্তন হয়।
+৪. কেন এটা দরকার?
+সরাসরি car.speed = 1000 করলে গাড়ি হঠাৎ অনেক দ্রুত হতে পারে, যা বাস্তবিক নয়।
+কিন্তু accelerate() method দিয়ে শুধু ধীরে ধীরে speed বাড়ানো হয়।
+তাই বাইরের কোডকে নিয়ন্ত্রিত ও নিরাপদ ইন্টারফেস দেওয়ার জন্য method ব্যবহার করা হয়।
+সংক্ষেপে:
+accelerate আর brake method গাড়ির speed পরিবর্তন করে।
+এগুলো গাড়ির বাইরের অংশের সাথে যোগাযোগের (public interface) দরজা।
+অন্য code শুধু এই method গুলোর মাধ্যমে গাড়ির behavior নিয়ন্ত্রণ করে, সরাসরি speed না ছুঁয়ে। 
+/////////////////////////////////////////////
+তুমি ভাবো একটা খেলনা গাড়ি আছে, যার স্পীড (speed) নামের একটা মান আছে।
+
+এখন তুমি সরাসরি গাড়ির স্পীডকে হাত দিয়ে বাড়াতে বা কমাতে পারো না।
+
+তোমার কাছে গাড়ির সাথে কথা বলার জন্য দুইটা বোতাম আছে — একটা গাড়ি দ্রুত চালানোর জন্য (accelerate), আর একটা গাড়ি থামানোর জন্য (brake)।
+
+বোঝার মতো কথা:
+accelerate() = গাড়িকে দ্রুত করতে বোতাম
+
+brake() = গাড়িকে ধীরে করতে বোতাম
+
+তাই, বাইরের কেউ শুধু ওই বোতাম দুইটা ব্যবহার করবে, গাড়ির স্পীড নিজে থেকে সরাসরি বদলাতে পারবে না।
+এটাকেই বলে — public interface (গাড়ির বাইরের সাথে কথা বলার নিয়ম)
+আর স্পীডের মান গাড়ির ভিতরে লুকিয়ে রাখা, কেউ সরাসরি স্পর্শ করতে পারবে না — এটাকেই বলে encapsulation।
+
+তোমার এই interface এর মাধ্যমে গাড়ি নিয়ন্ত্রণ করা হয়, ঠিক যেমন তোমার হাতে রিমোটের বোতাম আছে গাড়ি চালানোর জন্য।
+*/
+
+/**********************************************/
+/**************** ES6 Classes ****************/
+/**********************************************/
+/*
+//class expression
+// const PersonCl = class{}
+//class declaration
+class PersonCl {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+  //creating methods. these methods will be added to the prototype property of the personcl class which will be prototype of the obj created by the class
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  }
+  greet() {
+    console.log(`HEY! ${this.firstName}`);
+  }
+}
+
+const mabiu = new PersonCl('Mabiu', 1992);
+console.log(mabiu);
+mabiu.calcAge();
+console.log(mabiu.__proto__ === PersonCl.prototype); //true
+console.log(mabiu.__proto__); //PersonCl.prototype
+console.log(mabiu.__proto__.__proto__ === Object.prototype); //true //Object.prototype
+console.log(mabiu.__proto__.__proto__.__proto__ === null); //true
+
+//adding method manually
+// PersonCl.prototype.greet = function () {
+//   console.log(`HEY! ${this.firstName}`);
+// };
+mabiu.greet();
+*/
+
+/**********************************************/
+/************ Setters and Getters *************/
+/**********************************************/
+
+// const account = {
+//   owner: 'Neil',
+//   movements: [200, 500, 700, 600, 100],
+
+//   get latest() {
+//     return this.movements.slice(-1).pop();
+//   },
+//   set latest(move) {
+//     this.movements.push(move);
+//   },
+// };
+// console.log(account.latest);
+// account.latest = 50;
+// console.log(account.movements);
+
+//for class
+// class PersonCl {
+//   constructor(firstName, birthYear) {
+//     this.firstName = firstName;
+//     this.birthYear = birthYear;
+//   }
+//   calcAge() {
+//     console.log(2037 - this.birthYear);
+//   }
+//   greet() {
+//     console.log(`HEY! ${this.firstName}`);
+//   }
+//   get age() {
+//     return 2025 - this.birthYear;
+//   }
+// }
+// const Shaqib = new PersonCl('shakib', 1992);
+// console.log(Shaqib.age);
+// console.log(Shaqib);
+
+//creating a setter to check if it actually is a full anme
+// class PersonCl {
+//   constructor(fullName, birthYear) {
+//     this.fullName = fullName;
+//     this.birthYear = birthYear;
+//   }
+//   calcAge() {
+//     console.log(2037 - this.birthYear);
+//   }
+//   greet() {
+//     console.log(`HEY! ${this.fullName}`);
+//   }
+//   get age() {
+//     return 2025 - this.birthYear;
+//   }
+
+//   //set a property that already exist
+//   set fullName(name) {
+//     console.log(name);
+//     if (name.includes(' ')) this._fullName = name;
+//     else alert(`${name} is not a full name`);
+//   }
+//   get fullName() {
+//     return this._fullName;
+//   }
+// }
+// const shaqib = new PersonCl('Shaqibul Islam', 1992);
+// console.log(shaqib.age);
+// console.log(shaqib);
+
+// const walter = new PersonCl('Walter', 1965);
+
+/**********************************************/
+//এনক্যাপসুলেশন (Encapsulation) - প্রাইভেট প্রপার্টি এবং get/set
+/**********************************************/
+// class BankAccount {
+//   #balance; // private field
+//   constructor(initialBalance) {
+//     this.#balance = initialBalance;
+//   }
+//   get balance() {
+//     // সরাসরি #balance সরবরাহ না করে গেটার দিয়ে দেয়
+//     return this.#balance;
+//   }
+//   deposit(amount) {
+//     amount > 0 ? (this.#balance += amount) : 'Deposit amount must be positive!';
+//   }
+//   withdraw(amount) {
+//     amount > 0 && amount <= this.#balance
+//       ? (this.#balance -= amount)
+//       : 'Invalid withdraw amount!';
+//   }
+// }
+// const account1 = new BankAccount(1000);
+// console.log(account1.balance);
+// account1.deposit(500);
+// console.log(account1.balance);
+// account1.withdraw(50);
+// console.log(account1.balance);
+//console.log(account1.#balance); //error dibe
+// #balance হলো private property, বাইরের কেউ সরাসরি অ্যাক্সেস করতে পারবে না।
+// get balance() দিয়ে ব্যালেন্স দেখা যায়, কিন্তু পরিবর্তন করতে পারবে না সরাসরি।
+// পরিবর্তনের জন্য deposit এবং withdraw মেথড দেয়া হয়েছে, যেখানে ভ্যালিডেশন করা হয়।
+// এইভাবে ডাটা সেফ রাখা হয়, ভুল ব্যবহার কমে যায়।
+
+/******************************************** */
+//ডাটা রূপান্তর (Transformation) - Getter দিয়ে Age বের করা
+/******************************************** */
+
+// class Person {
+//   constructor(firstName, birthYear) {
+//     this.firstName = firstName;
+//     this.birthYear = birthYear;
+//   }
+//   get age() {
+//     return new Date().getFullYear() - this.birthYear;
+//   }
+// }
+// const shakib = new Person('Shakib', 1992);
+// console.log(shakib);
+// console.log(shakib.age);
+
+/****************Practice 1****************/
+/* ১. Student Class
+Instruction:
+একটা Student ক্লাস বানাও।
+প্রোপার্টি: firstName, lastName, marks (array)।
+fullName নামে getter তৈরি করো যা পুরো নাম রিটার্ন করবে।
+averageMark নামে getter তৈরি করো যা marks এর গড় (average) রিটার্ন করবে।
+fullName নামে setter তৈরি করো, যা fullname দিয়ে firstName আর lastName আলাদা করবে। */
+/*
+class Student {
+  constructor(firstName, lastName, marks) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.marks = marks;
+  }
+  // fullName getter - firstName + lastName combine kore full name dibe
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+  // fullName setter - fullname input nibe, space diye split kore firstName ar lastName alada korbe
+  set fullName(name) {
+    const parts = name.split(' ');
+    this.firstName = parts[0] || '';
+    this.lastName = parts.slice(-1).join(' ') || '';
+  }
+  // averageMark getter - marks array er average calculate kore dibe
+  get averageMark() {
+    if (!this.marks.length) return 0;
+    const sum = this.marks.reduce((accu, curr) => accu + curr, 0);
+    return sum / this.marks.length;
+  }
+}
+const neil = new Student('Neil', 'Juneja', [95, 96, 97]);
+console.log(neil);
+console.log(neil.averageMark);
+console.log(neil.fullName);
+console.log(neil.firstName);
+console.log(neil.lastName);
+*/
+
+/****************Practice 2****************/
+/*২. BankAccount Class
+Instruction:
+একটা BankAccount ক্লাস বানাও।
+প্রোপার্টি: accountNumber, #balance (প্রাইভেট)।
+balance নামে getter দাও যা #balance রিটার্ন করবে।
+deposit(amount) মেথড তৈরি করো যা #balance বাড়াবে (শুধুমাত্র পজিটিভ মান)।
+withdraw(amount) মেথড তৈরি করো যা #balance কমাবে যদি যথেষ্ট ব্যালেন্স থাকে।*/
