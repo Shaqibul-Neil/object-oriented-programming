@@ -1,4 +1,5 @@
 'use strict';
+/**** Way 1: implementing prototype inheritance and delegation ****/
 /**********************************************************/
 /****** Constructor Functions and the new Operator *******/
 /********************************************************/
@@ -359,6 +360,7 @@ brake() = গাড়িকে ধীরে করতে বোতাম
 তোমার এই interface এর মাধ্যমে গাড়ি নিয়ন্ত্রণ করা হয়, ঠিক যেমন তোমার হাতে রিমোটের বোতাম আছে গাড়ি চালানোর জন্য।
 */
 
+/**** Way 2: implementing prototype inheritance and delegation ****/
 /**********************************************/
 /**************** ES6 Classes ****************/
 /**********************************************/
@@ -564,6 +566,32 @@ Instruction:
 balance নামে getter দাও যা #balance রিটার্ন করবে।
 deposit(amount) মেথড তৈরি করো যা #balance বাড়াবে (শুধুমাত্র পজিটিভ মান)।
 withdraw(amount) মেথড তৈরি করো যা #balance কমাবে যদি যথেষ্ট ব্যালেন্স থাকে।*/
+/*
+class BankAccount {
+  #balance;
+  constructor(accountNumber, balance) {
+    this.accountNumber = accountNumber;
+    this.#balance = balance;
+  }
+  get balance() {
+    return this.#balance;
+  }
+  deposit(amount) {
+    if (amount > 0) return (this.#balance += amount);
+    else return `Invalid`;
+  }
+  withdraw(amount) {
+    if (amount > 0 && amount <= this.#balance) return (this.#balance -= amount);
+    else return `Invalid`;
+  }
+}
+const acc = new BankAccount('Shakib', 5000);
+console.log(acc);
+console.log(acc.balance);
+console.log(acc.deposit(100));
+console.log(acc.deposit(-100));
+console.log(acc.withdraw(100000));
+*/
 
 /****************Practice 3****************/
 /*৩. Rectangle Class
@@ -573,6 +601,46 @@ Instruction:
 area নামে getter দাও যা আয়তক্ষেত্রের এলাকা রিটার্ন করবে।
 perimeter নামে getter দাও যা পেরিমিটার রিটার্ন করবে।
 width এবং height এর জন্য setter দাও যাতে নেগেটিভ ভ্যালু সেট করলে alert দেখায়।*/
+/*
+class Rectangle {
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+  get area() {
+    return this.width * this.height;
+  }
+  get perimeter() {
+    return 2 * (this.width + this.height);
+  }
+  set height(value) {
+    if (value > 0) this._height = value;
+    else {
+      alert(`Negative`);
+      this._height = 1;
+    }
+  }
+  get height() {
+    return this._height;
+  }
+  set width(value) {
+    if (value > 0) this._width = value;
+    else {
+      alert(`Negative`);
+      this._width = 1;
+    }
+  }
+  get width() {
+    return this._width;
+  }
+}
+const land = new Rectangle(10, -5);
+console.log(land);
+console.log(land.area);
+console.log(land.perimeter);
+land.height = 4;
+console.log(land.height);
+*/
 
 /****************Practice 4****************/
 /*৪. Temperature Class
@@ -643,3 +711,100 @@ shakib.password = 5555124454;
 console.log(shakib.password);
 console.log(shakib);
 */
+
+/****************Practice 6****************/
+/*
+৬. Car Class
+Instruction:
+প্রোপার্টি: brand, model, year।
+age নামে getter তৈরি করো যা বর্তমান বছর থেকে গাড়ির বয়স বের করবে।
+model এর জন্য setter দাও, যা খালি স্ট্রিং হলে alert দিবে।
+*/
+
+/****************Practice 7****************/
+/*
+৭. ShoppingCart Class
+Instruction:
+প্রোপার্টি: items (array of objects { name, price })।
+total নামে getter তৈরি করো যা সব আইটেমের প্রাইস যোগ করবে।
+addItem(item) মেথড যা নতুন আইটেম যোগ করবে।
+*/
+
+/****************Practice 8****************/
+/*
+৮. Movie Class
+Instruction:
+প্রোপার্টি: title, rating (০ থেকে ১০ এর মধ্যে)।
+rating এর জন্য setter দাও যাতে ০–১০ এর বাইরে হলে alert দেয়।
+rating getter শুধু "Rating: X/10" ফরম্যাটে রিটার্ন করবে।
+*/
+
+/****************Practice 9****************/
+/*
+৯. Book Class
+Instruction:
+প্রোপার্টি: title, author, pagesRead, totalPages।
+progress নামে getter যা রিটার্ন করবে "X% read"।
+pagesRead এর জন্য setter যাতে টোটাল পেজের বেশি হলে alert দেয়।
+*/
+
+/****************Practice 10****************/
+/*
+১০. BankLoan Class
+Instruction:
+প্রোপার্টি: loanAmount, interestRate (%), years।
+totalPayable নামে getter দাও যা simple interest অনুযায়ী মোট পেমেন্ট বের করবে।
+interestRate এর জন্য setter দাও যাতে নেগেটিভ ভ্যালু হলে alert দেয়।
+*/
+
+/**********************************************/
+/************** Static Methods ***************/
+/********************************************/
+// class PersonCl {
+//   constructor(firstName, birthYear) {
+//     this.firstName = firstName;
+//     this.birthYear = birthYear;
+//   }
+//   //instance method
+//   //methods will be added to the prototype property
+//   calcAge() {
+//     console.log(2037 - this.birthYear);
+//   }
+//   greet() {
+//     console.log(`HEY! ${this.firstName}`);
+//   }
+//   get age() {
+//     return 2025 - this.birthYear;
+//   }
+//   //static method: methods will not be added to the prototype property
+//   static hey() {
+//     console.log(`Hey There`);
+//     console.log(this); //entire constructor function
+//   }
+// }
+// const Shaqib = new PersonCl('shakib', 1992);
+// console.log(Shaqib.age);
+// console.log(Shaqib);
+// console.log(PersonCl);
+// PersonCl.hey();
+
+//if used in
+// const Person = function (firstName, birthYear) {
+//   this.birthYear = birthYear;
+//   this.firstName = firstName;
+// };
+// const neil = new Person('Neil', 1992);
+// console.log(neil);
+// //static method
+// Person.hey = function () {
+//   console.log(`Hey There`);
+//   console.log(this); //entire constructor function
+// };
+// Person.hey(); //its on the constructor
+//neil.hey(); //so neil wont inherit it
+
+/**** Way 3: implementing prototype inheritance and delegation ****/
+
+/**********************************************/
+/************** Object.create ***************/
+/********************************************/
