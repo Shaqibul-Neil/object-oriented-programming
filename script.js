@@ -436,7 +436,7 @@ mabiu.greet();
 // console.log(Shaqib.age);
 // console.log(Shaqib);
 
-//creating a setter to check if it actually is a full anme
+//creating a setter to check if it actually is a full name
 // class PersonCl {
 //   constructor(fullName, birthYear) {
 //     this.fullName = fullName;
@@ -747,6 +747,34 @@ Instruction:
 progress নামে getter যা রিটার্ন করবে "X% read"।
 pagesRead এর জন্য setter যাতে টোটাল পেজের বেশি হলে alert দেয়।
 */
+/*
+class Book {
+  constructor(title, author, pagesRead, totalPages) {
+    this.title = title;
+    this.author = author;
+    this.totalPages = totalPages;
+    this.pagesRead = pagesRead;
+  }
+  get progress() {
+    const x = (this.pagesRead / this.totalPages) * 100;
+    return `${x}% read`;
+  }
+  set pagesRead(num) {
+    if (num <= this.totalPages) this._pagesRead = num;
+    else {
+      alert(`Can not be greater than total pages`);
+      this._pagesRead = 0;
+    }
+  }
+  get pagesRead() {
+    return this._pagesRead || 0;
+  }
+}
+const biography = new Book('my', 'Neil', 10, 100);
+console.log(biography);
+console.log(biography.progress);
+console.log(biography.pagesRead);
+*/
 
 /****************Practice 10****************/
 /*
@@ -755,6 +783,36 @@ Instruction:
 প্রোপার্টি: loanAmount, interestRate (%), years।
 totalPayable নামে getter দাও যা simple interest অনুযায়ী মোট পেমেন্ট বের করবে।
 interestRate এর জন্য setter দাও যাতে নেগেটিভ ভ্যালু হলে alert দেয়।
+*/
+/*
+class BankLoan {
+  constructor(loanAmount, interestRate, years) {
+    this.loanAmount = loanAmount;
+    this.interestRate = interestRate;
+    this.years = years;
+  }
+  get totalPayable() {
+    return (
+      this.loanAmount + this.loanAmount * (this.interestRate / 100) * this.years
+    );
+  }
+  set interestRate(number) {
+    if (number > 0) this._interestRate = number;
+    else {
+      alert('Negative');
+      this._interestRate = 1;
+    }
+  }
+  get interestRate() {
+    return this._interestRate;
+  }
+}
+const loan1 = new BankLoan(100, 5, 2);
+console.log(loan1);
+console.log(loan1.totalPayable);
+loan1.interestRate = 10;
+console.log(loan1.interestRate);
+console.log(loan1);
 */
 
 /**********************************************/
