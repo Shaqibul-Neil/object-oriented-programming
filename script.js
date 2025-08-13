@@ -929,3 +929,79 @@ console.log(loan1);
 /*********************************************************/
 /* Inheritance Between "Classes": Constructor Functions */
 /*******************************************************/
+/*
+const Person = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+Person.prototype.calcAge = function () {
+  console.log(2037 - this.birthYear);
+};
+
+const Student = function (firstName, birthYear, course) {
+  // this.firstName = firstName;
+  // this.birthYear = birthYear;
+  Person.call(this, firstName, birthYear);
+  this.course = course;
+};
+//creating/linking prototype chain for student and person
+Student.prototype = Object.create(Person.prototype);
+
+//Student.prototype = Person.prototype; //doesnt work
+Student.prototype.introduce = function () {
+  console.log(`My Name is ${this.firstName} and I study ${this.course}`);
+};
+const neil = new Student('Neil', 1992, 'CS');
+console.log(neil);
+neil.introduce();
+
+console.log(Student.__proto__);
+console.log(Student.prototype);
+
+console.log(Student.prototype.__proto__ === Person.prototype); //true
+console.log(Student.__proto__.__proto__ === Object.prototype); //true
+console.log(Student.__proto__.__proto__.__proto__ === null); //true
+console.log(neil.__proto__ === Student.prototype); //true
+console.log(neil.__proto__.__proto__ === Person.prototype); //true
+console.log(neil.__proto__.__proto__.__proto__ === Object.prototype); //true
+console.log(neil.__proto__.__proto__.__proto__.__proto__ === null); //true
+neil.calcAge();
+console.log(neil.__proto__); //student.prototype
+console.log(neil.__proto__.__proto__); //person.prototype
+console.log(neil.__proto__.__proto__.__proto__); //Object.prototype
+console.log(neil.__proto__.__proto__.__proto__.__proto__); //null
+
+console.log(Student.prototype.constructor); //student er constructor dekhanor ktha bt dekhasse person er constructor
+console.dir(Student.prototype.constructor); //js mne krtese student.prototype er constructor hsse person
+console.log(neil instanceof Student); //true
+console.log(neil instanceof Person); //true
+console.log(neil instanceof Object); //true
+console.log(Student instanceof Person); //false এখানে Student নিজে একটি function object, instance নয়। instanceof check → left object এর prototype chain → right.prototype পায় কিনা। Student.proto → Function.prototypePerson.prototype → Person.prototype
+// Function.prototype !== Person.prototype
+//fix
+
+Student.prototype.constructor = Student;
+console.log(neil);
+console.dir(Student.prototype.constructor);
+
+console.dir(neil.constructor);
+console.log(neil.__proto__.constructor);
+
+console.log(neil.__proto__.constructor === Student); //true
+
+console.log(typeof Person); // function
+console.log(typeof Student); // function
+console.log(typeof Student.prototype); //obj
+*/
+
+/**********************************************/
+/**************** Challenge 3 ****************/
+/********************************************/
+/* 
+1. Use a constructor function to implement an Electric Car (called EV) as a CHILD "class" of Car. Besides a make and current speed, the EV also has the current battery charge in % ('charge' property);
+2. Implement a 'chargeBattery' method which takes an argument 'chargeTo' and sets the battery charge to 'chargeTo';
+3. Implement an 'accelerate' method that will increase the car's speed by 20, and decrease the charge by 1%. Then log a message like this: 'Tesla going at 140 km/h, with a charge of 22%';
+4. Create an electric car object and experiment with calling 'accelerate', 'brake' and 'chargeBattery' (charge to 90%). Notice what happens when you 'accelerate'! HINT: Review the definiton of polymorphism 😉
+
+DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of 23%
+*/
