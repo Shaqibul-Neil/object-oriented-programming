@@ -866,3 +866,66 @@ console.log(loan1);
 /**********************************************/
 /************** Object.create ***************/
 /********************************************/
+
+// const PersonProto = {
+//   calcAge() {
+//     console.log(2037 - this.birthYear);
+//   },
+//   init(name, birthYear) {
+//     this.name = name;
+//     this.birthYear = birthYear;
+//   },
+// };
+// const neil = Object.create(PersonProto);
+// console.log(neil);
+// neil.name = 'Neil';
+// neil.birthYear = 1992;
+// neil.calcAge();
+// console.log(neil.__proto__);
+// console.log(neil.__proto__ === PersonProto);
+
+// const shakib = Object.create(PersonProto);
+// shakib.init('Shakib', 2024);
+// shakib.calcAge();
+// console.log(shakib);
+
+/**********************************************/
+/**************** Challenge 2 ****************/
+/********************************************/
+
+// class Car {
+//   constructor(make, speed) {
+//     this.make = make;
+//     this.speed = speed;
+//   }
+//   accelerate() {
+//     this.speed += 10;
+//     console.log(`${this.make} going at ${this.speed} km/h`);
+//   }
+//   brake() {
+//     this.speed -= 5;
+//     console.log(`${this.make} going at ${this.speed} km/h`);
+//   }
+//   get speedUS() {
+//     return this.speed / 1.6;
+//   }
+//   set speedUS(speedMile) {
+//     this.speed = speedMile * 1.6;
+//   }
+// }
+// const BMW = new Car('BMW', 120);
+// console.log(BMW.speedUS);
+// BMW.accelerate();
+// console.log(BMW.speedUS);
+// BMW.speedUS = 50;
+// console.log(BMW);
+// const Mercedes = new Car('Mercedes', 95);
+// console.log(BMW, Mercedes);
+
+// console.log(Car.prototype);
+// console.log(BMW instanceof Car);
+// console.log(BMW.__proto__ === Car.prototype);
+
+/*********************************************************/
+/* Inheritance Between "Classes": Constructor Functions */
+/*******************************************************/
