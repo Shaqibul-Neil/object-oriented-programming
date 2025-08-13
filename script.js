@@ -995,7 +995,7 @@ console.log(typeof Student.prototype); //obj
 */
 
 /**********************************************/
-/**************** Challenge 3 ****************/
+/********Challenge 3 with Constructor*********/
 /********************************************/
 /* 
 1. Use a constructor function to implement an Electric Car (called EV) as a CHILD "class" of Car. Besides a make and current speed, the EV also has the current battery charge in % ('charge' property);
@@ -1005,6 +1005,7 @@ console.log(typeof Student.prototype); //obj
 
 DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of 23%
 */
+/*
 const Car = function (make, speed) {
   this.make = make;
   this.speed = speed;
@@ -1022,8 +1023,10 @@ const EV = function (make, speed, charge) {
   this.charge = charge;
 };
 // Linking prototype chain
-EV.prototype = Object.create(Car.prototype); //inherit Car methods
+EV.prototype = Object.create(Car.prototype); //inherit Car method
 
+// correct constructor reference. eta na dile tesla.constructor dile car show krbe bt tesla.constructor howa uchit EV. Proper reference restore hoy.
+EV.prototype.constructor = EV;
 //EV specific method
 EV.prototype.chargeBattery = function (chargeTo) {
   this.charge = chargeTo;
@@ -1044,3 +1047,225 @@ console.log(tesla);
 tesla.accelerate(); //child method parent method override করছে → এটাই polymorphism
 tesla.accelerate();
 console.log(tesla);
+console.log(tesla.constructor);
+*/
+
+/*********************************************************/
+/****** Inheritance Between "Classes": ES6 Classes ******/
+/*******************************************************/
+/*
+class PersonCl {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+  //instance method
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  }
+  greet() {
+    console.log(`HEY! ${this.fullName}`);
+  }
+  get age() {
+    return 2025 - this.birthYear;
+  }
+
+  //set a property that already exist
+  set fullName(name) {
+    console.log(name);
+    if (name.includes(' ')) this._fullName = name;
+    else alert(`${name} is not a full name`);
+  }
+  get fullName() {
+    return this._fullName;
+  }
+}
+
+//if student has no new property
+// class Student extends PersonCl {
+
+//own method
+//   introduce() {
+//     console.log(`My Name is ${this.fullName} and I born in ${this.birthYear}`);
+//   }
+// }
+// const neil = new Student('neil juneja', 1992);
+// console.log(neil);
+// neil.introduce();
+
+//if student has new property
+class Student extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    //alwz declare it first. it sets the this keyword
+    super(fullName, birthYear);
+    this.course = course;
+  }
+  //own method
+  introduce() {
+    console.log(`My Name is ${this.fullName} and I study ${this.course}`);
+  }
+  //polymorphism overwriting Parent class method
+  calcAge() {
+    console.log(2025 - this.birthYear);
+  }
+}
+const neil = new Student('neil juneja', 1992, 'CS');
+console.log(neil);
+neil.greet();
+neil.introduce();
+neil.calcAge();
+*/
+
+/**********************************************/
+/**************Challenge 3 with ES6***********/
+/********************************************/
+/* 
+1. Use a ES6 function to implement an Electric Car (called EV) as a CHILD "class" of Car. Besides a make and current speed, the EV also has the current battery charge in % ('charge' property);
+2. Implement a 'chargeBattery' method which takes an argument 'chargeTo' and sets the battery charge to 'chargeTo';
+3. Implement an 'accelerate' method that will increase the car's speed by 20, and decrease the charge by 1%. Then log a message like this: 'Tesla going at 140 km/h, with a charge of 22%';
+4. Create an electric car object and experiment with calling 'accelerate', 'brake' and 'chargeBattery' (charge to 90%). Notice what happens when you 'accelerate'! HINT: Review the definiton of polymorphism 😉
+
+DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of 23%
+*/
+/*
+class Car {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} going at ${this.speed} km/h`);
+    return this; // method chaining er jonne Ek line e multiple method call possible
+  }
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} going at ${this.speed} km/h`);
+    return this; // method chaining er jonne Ek line e multiple method call possible
+  }
+}
+class EV extends Car {
+  constructor(make, speed, charge) {
+    // Car class constructor call
+    super(make, speed);
+    // EV-specific property
+    this.charge = charge;
+  }
+  // Charge set kora
+  chargeBattery(chargeTo) {
+    this.charge = chargeTo;
+    return this; // method chaining er jonne Ek line e multiple method call possible
+  }
+  // Polymorphism: parent accelerate override
+  accelerate() {
+    this.speed += 20;
+    // Charge 1% komano
+    this.charge--;
+    console.log(
+      `${this.make} going at ${this.speed} km/h with a charge of ${this.charge}%`
+    );
+    return this; // method chaining er jonne Ek line e multiple method call possible
+  }
+}
+const tesla = new EV('Tesla', 120, 23);
+console.log(tesla);
+tesla.accelerate();
+tesla.chargeBattery(90);
+console.log(tesla);
+tesla.brake();
+tesla.accelerate();
+tesla.accelerate();
+
+// Ek line e multiple method call possible
+tesla.accelerate().accelerate().brake().chargeBattery(90).accelerate();
+*/
+
+/*********************************************************/
+/***** Inheritance Between "Classes": Object.create *****/
+/*******************************************************/
+/*
+const PersonProto = {
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+  init(name, birthYear) {
+    this.name = name;
+    this.birthYear = birthYear;
+  },
+};
+const StudentProto = Object.create(PersonProto);
+StudentProto.init = function (name, birthYear, course) {
+  PersonProto.init.call(this, name, birthYear);
+  this.course = course;
+};
+StudentProto.introduce = function () {
+  console.log(`My Name is ${this.name} and I study ${this.course}`);
+};
+
+const neil = Object.create(StudentProto);
+
+//age init call kore argument pass kro
+neil.init('neil', 2020, 'cs');
+
+console.log(neil);
+neil.introduce();
+neil.calcAge();
+*/
+
+/**********************************************/
+/********Challenge 3 with Object.create*******/
+/********************************************/
+/* 
+1. Use a Object.create to implement an Electric Car (called EV) as a CHILD "class" of Car. Besides a make and current speed, the EV also has the current battery charge in % ('charge' property);
+2. Implement a 'chargeBattery' method which takes an argument 'chargeTo' and sets the battery charge to 'chargeTo';
+3. Implement an 'accelerate' method that will increase the car's speed by 20, and decrease the charge by 1%. Then log a message like this: 'Tesla going at 140 km/h, with a charge of 22%';
+4. Create an electric car object and experiment with calling 'accelerate', 'brake' and 'chargeBattery' (charge to 90%). Notice what happens when you 'accelerate'! HINT: Review the definiton of polymorphism 😉
+
+DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of 23%
+*/
+/*
+const Car = {
+  init(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  },
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} going at ${this.speed} km/h`);
+    return this; // method chaining er jonne Ek line e multiple method call possible
+  },
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} going at ${this.speed} km/h`);
+    return this; // method chaining er jonne Ek line e multiple method call possible
+  },
+};
+const EV = Object.create(Car);
+EV.init = function (make, speed, charge) {
+  Car.init.call(this, make, speed);
+  this.charge = charge;
+};
+EV.chargeBattery = function (chargeTo) {
+  this.charge = chargeTo;
+  return this;
+};
+EV.accelerate = function () {
+  this.speed += 20;
+  this.charge--;
+  console.log(
+    `${this.make} going at ${this.speed} km/h with a charge of ${this.charge}%`
+  );
+  return this; // method chaining er jonne Ek line e multiple method call possible
+};
+const tesla = Object.create(EV);
+tesla.init('Tesla', 120, 23);
+tesla.accelerate();
+tesla.brake();
+tesla.chargeBattery(90);
+tesla.accelerate();
+console.log(tesla);
+*/
+
+/**********************************************/
+/*************Another Class Example***********/
+/********************************************/
