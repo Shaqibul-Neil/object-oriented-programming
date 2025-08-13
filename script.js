@@ -1005,3 +1005,42 @@ console.log(typeof Student.prototype); //obj
 
 DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of 23%
 */
+const Car = function (make, speed) {
+  this.make = make;
+  this.speed = speed;
+};
+Car.prototype.accelerate = function () {
+  this.speed += 10;
+  console.log(`${this.make} going at ${this.speed} km/h`);
+};
+Car.prototype.brake = function () {
+  this.speed -= 5;
+  console.log(`${this.make} going at ${this.speed} km/h`);
+};
+const EV = function (make, speed, charge) {
+  Car.call(this, make, speed); // Car constructor call with this → inheritance of make & speed
+  this.charge = charge;
+};
+// Linking prototype chain
+EV.prototype = Object.create(Car.prototype); //inherit Car methods
+
+//EV specific method
+EV.prototype.chargeBattery = function (chargeTo) {
+  this.charge = chargeTo;
+};
+EV.prototype.accelerate = function () {
+  this.speed += 20;
+  this.charge--;
+  console.log(
+    `${this.make} going at ${this.speed} km/h, with a charge of ${this.charge}%`
+  );
+};
+
+const tesla = new EV('Tesla', 120, 23);
+console.log(tesla);
+tesla.brake();
+tesla.chargeBattery(90);
+console.log(tesla);
+tesla.accelerate(); //child method parent method override করছে → এটাই polymorphism
+tesla.accelerate();
+console.log(tesla);
