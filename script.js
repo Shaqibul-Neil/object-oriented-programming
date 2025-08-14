@@ -1266,6 +1266,87 @@ tesla.accelerate();
 console.log(tesla);
 */
 
-/**********************************************/
-/*************Another Class Example***********/
-/********************************************/
+/***************************************************/
+/****************Another Class Example*************/
+/*Encapsulation: Private Class Fields and Methods*/
+/************************************************/
+class Account {
+  //encapsulation
+  //Public Field for all instances
+  locale = navigator.language;
+  bank = 'Bankist';
+
+  //Private Field
+  #pin;
+  #movements = [];
+
+  //Constructor
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.#pin = pin;
+    //this.#movements = [];
+    //this.locale = navigator.language;
+    console.log(`Thanks ${owner}`);
+  }
+
+  //Private Method
+  #approveLoan(value) {
+    //now a fake method bt could have some complex logic in reallife. internal method
+    return true;
+  }
+  //Public Methods or public interface of the objects or API
+  getMovements() {
+    return this.#movements; //giving access to movements to other developer. eta muloto api theke access dicchi beparta amn
+  }
+  deposit(value) {
+    this.#movements.push(value);
+  }
+  withdrawal(value) {
+    this.deposit(-value);
+  }
+
+  requestLoan(value) {
+    if (this.#approveLoan(value)) {
+      this.deposit(value);
+      console.log(`Loan Approved`);
+    }
+  }
+  //static public method
+  static test() {
+    console.log('Hi');
+  }
+}
+const acc1 = new Account('Neil', 'Taka', 1111);
+console.log(acc1);
+
+//bad Practice
+// acc1.movements.push(250);
+// acc1.movements.push(-250);
+// console.log(acc1);
+
+//good way using method
+// acc1.deposit(250);
+// acc1.withdrawal(150);
+// console.log(acc1);
+// acc1.requestLoan(1000);
+// console.log(acc1);
+
+//acc1.#approveLoan(1000); //private--encapsulated
+//console.log(acc1.pin); //এইটা undefined দেখাবে (বা error দিবে না, কিন্তু ডাটা পাবে না) — কারণ pin তুমি private field হিসেবে #pin নামে ডিফাইন করেছো। JavaScript এ private field (যেটা # দিয়ে শুরু হয়) ক্লাসের বাইরে থেকে এক্সেস করা যায় না।
+//console.log(acc1.#pin); // ❌ SyntaxError
+//console.log(acc1.movements); //এইটা undefined
+//acc1.movements = []; //new property create hoe jabe. asol movements array access hbena akhn r
+//console.log(acc1);
+//console.log(acc1.#movements); // ❌ SyntaxError
+
+//console.log(acc1.hasOwnProperty('locale')); //true instance property, prototype-এ নেই
+//console.log(Account.prototype.hasOwnProperty('locale'));
+
+// const acc2 = new Account('Shakib', 'Taka', 2222);
+// acc2.deposit(50);
+// acc2.withdrawal(10);
+// console.log(acc1, acc2);
+
+// Account.test(); //access ache
+// console.log(acc1.test()); //access nai
