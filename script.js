@@ -1270,6 +1270,7 @@ console.log(tesla);
 /****************Another Class Example*************/
 /*Encapsulation: Private Class Fields and Methods*/
 /************************************************/
+/*
 class Account {
   //encapsulation
   //Public Field for all instances
@@ -1350,3 +1351,139 @@ console.log(acc1);
 
 // Account.test(); //access ache
 // console.log(acc1.test()); //access nai
+*/
+
+/***************************************************/
+/*******************Chaining Methods***************/
+/*************************************************/
+/*
+class Account {
+  //Public Field for all instances
+  locale = navigator.language;
+  bank = 'Bankist';
+
+  //Private Field
+  #pin;
+  #movements = [];
+
+  //Constructor
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.#pin = pin;
+    console.log(`Thanks ${owner}`);
+  }
+
+  //Private Method
+  #approveLoan(value) {
+    return true;
+  }
+  //Public Methods or public interface of the objects or API
+  getMovements() {
+    return this.#movements; //giving access to movements to other developer. eta muloto api theke access dicchi beparta amn. not chainable with other method.bt will work in the end of the chain
+  }
+  deposit(value) {
+    this.#movements.push(value);
+    return this; //Method chaining-এর জন্য আমাদের দরকার হয় প্রতিবার মেথড কলের পর সেই object (যেটার উপর মেথড কল হয়েছে) ফেরত পাওয়া।  <-- পুরো object ফেরত দিচ্ছি
+  }
+  withdrawal(value) {
+    this.deposit(-value);
+    return this;
+  }
+
+  requestLoan(value) {
+    if (this.#approveLoan(value)) {
+      this.deposit(value);
+      console.log(`Loan Approved`);
+    }
+    return this;
+  }
+  //static public method
+  static test() {
+    console.log('Hi');
+  }
+}
+const acc1 = new Account('Neil', 'Taka', 1111);
+console.log(acc1);
+
+// কারণ প্রতিবার deposit() শেষ হওয়ার পর this রিটার্ন হচ্ছে, যা acc1 ইন্সট্যান্সের রেফারেন্স।
+const movements = acc1
+  .deposit(5000)
+  .withdrawal(50)
+  .withdrawal(100)
+  .withdrawal(100)
+  .requestLoan(200)
+  .deposit(100)
+  .getMovements();
+console.log(acc1);
+console.log(movements);
+*/
+
+/***************************************************/
+/*****************Coding Challenge #4**************/
+/*************************************************/
+/* 
+1. Re-create challenge #3, but this time using ES6 classes: create an 'EVCl' child class of the 'CarCl' class
+2. Make the 'charge' property private;
+3. Implement the ability to chain the 'accelerate' and 'chargeBattery' methods of this class, and also update the 'brake' method in the 'CarCl' class. They experiment with chining!
+
+DATA CAR 1: 'Rivian' going at 120 km/h, with a charge of 23%
+
+GOOD LUCK 😀
+*/
+/*
+class CarCl {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} going at ${this.speed} km/h`);
+  }
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} going at ${this.speed} km/h`);
+    return this;
+  }
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+  set speedUS(value) {
+    this.speed = value * 1.6;
+  }
+}
+class EVCl extends CarCl {
+  #charge;
+  constructor(make, speed, charge) {
+    super(make, speed);
+    this.#charge = charge;
+  }
+  chargeBattery(chargeTo) {
+    this.#charge = chargeTo;
+    console.log(`${this.make} charged to ${this.#charge}%`);
+    return this;
+  }
+  accelerate() {
+    this.speed += 20;
+    this.#charge--;
+    console.log(
+      `${this.make} going at ${this.speed} km/h with a charge of ${
+        this.#charge
+      }%`
+    );
+    return this;
+  }
+}
+
+const riviain = new EVCl('Rivian', 120, 23);
+console.log(riviain);
+const rev = riviain
+  .accelerate()
+  .chargeBattery(90)
+  .brake()
+  .accelerate()
+  .accelerate();
+console.log(riviain.speedUS);
+console.log(riviain);
+*/
